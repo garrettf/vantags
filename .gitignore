@@ -1,17 +1,11 @@
 **.orig
 *.rbc
-.rspec
 /.bundle
-/.bundle
-/coverage/
-/db/*.sqlite3
 /db/*.sqlite3
 /db/*.sqlite3-journal
 /log
-/log/*.log
 /public/system
 /spec/tmp
-/tmp
 /tmp
 /vendor/bundle
 config/initializers/secret_token.rb
