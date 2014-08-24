@@ -27,8 +27,32 @@ describe Van do
   end
 
   context 'tags' do
+    it 'can be stored via Set' do
+      subject.update! tags: Set[ 'new', 'shiny' ]
+      subject.reload
+      expect( subject.tags ).to eq Set[ 'new', 'shiny' ]
+    end
 
+    it 'can be stored via Array' do
+      subject.update! tags: [ 'new', 'shiny' ]
+      subject.reload
+      expect( subject.tags ).to eq Set[ 'new', 'shiny' ]
+    end
+
+    it 'can be erased' do
+      subject.update! tags: [ 'new', 'shiny' ]
+      subject.update! tags: nil
+      subject.reload
+      expect( subject.tags ).to be_nil
+    end
+
+    it 'can be easily added to' do
+      subject.update! tags: [ 'new', 'shiny' ]
+      expect( subject.tags ).to eq Set[ 'new', 'shiny' ]
+      subject.tags << 'sedan'
+      subject.save!
+      subject.reload
+      expect( subject.tags ).to eq Set[ 'new', 'sedan', 'shiny' ]
+    end
   end
-
-
 end
