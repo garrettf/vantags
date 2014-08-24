@@ -2,10 +2,8 @@ require 'rails_helper'
 
 describe Van do
   before do
-    @van = Van.new(
-      make:  'Newsmobile',
-      model: 'Shadow'
-    )
+    # make: 'Newsmobile', model: 'Shadow'
+    @van = FactoryGirl.build :van
   end
 
   subject { @van }

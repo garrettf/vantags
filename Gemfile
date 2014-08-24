@@ -10,11 +10,16 @@ gem 'sass-rails'
 gem 'turbolinks'
 gem 'uglifier'
 
-group :test do
-  gem 'rspec-rails', '~> 3.0'
-end
-
 group :development do
   gem 'pry-rails'
   gem 'spring'
 end
+
+group :development, :test do
+  gem 'factory_girl_rails'
+end
+
+group :test do
+  gem 'rspec-rails', '~> 3.0'
+end
+
