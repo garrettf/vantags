@@ -25,32 +25,48 @@ describe Van do
   end
 
   context 'tags' do
-    it 'can be stored via Set' do
-      subject.update! tags: Set[ 'new', 'shiny' ]
-      subject.reload
-      expect( subject.tags ).to eq Set[ 'new', 'shiny' ]
+    describe 'attribute' do
+      it 'can be stored via Set' do
+        subject.update! tags: Set[ 'new', 'shiny' ]
+        subject.reload
+        expect( subject.tags ).to eq Set[ 'new', 'shiny' ]
+      end
+
+      it 'can be stored via Array' do
+        subject.update! tags: [ 'new', 'shiny' ]
+        subject.reload
+        expect( subject.tags ).to eq Set[ 'new', 'shiny' ]
+      end
+
+      it 'can be erased' do
+        subject.update! tags: [ 'new', 'shiny' ]
+        subject.update! tags: nil
+        subject.reload
+        expect( subject.tags ).to be_nil
+      end
+
+      it 'can be easily added to' do
+        subject.update! tags: [ 'new', 'shiny' ]
+        expect( subject.tags ).to eq Set[ 'new', 'shiny' ]
+        subject.tags << 'sedan'
+        subject.save!
+        subject.reload
+        expect( subject.tags ).to eq Set[ 'new', 'sedan', 'shiny' ]
+      end
     end
 
-    it 'can be stored via Array' do
-      subject.update! tags: [ 'new', 'shiny' ]
-      subject.reload
-      expect( subject.tags ).to eq Set[ 'new', 'shiny' ]
-    end
+    describe 'scope' do
+      before do
+        @van1 = FactoryGirl.create :van, tags: [ 'new' ]
+        @van2 = FactoryGirl.create :van, tags: [ 'shiny' ]
+        @van3 = FactoryGirl.create :van, tags: [ 'new', 'shiny' ]
+      end
 
-    it 'can be erased' do
-      subject.update! tags: [ 'new', 'shiny' ]
-      subject.update! tags: nil
-      subject.reload
-      expect( subject.tags ).to be_nil
-    end
-
-    it 'can be easily added to' do
-      subject.update! tags: [ 'new', 'shiny' ]
-      expect( subject.tags ).to eq Set[ 'new', 'shiny' ]
-      subject.tags << 'sedan'
-      subject.save!
-      subject.reload
-      expect( subject.tags ).to eq Set[ 'new', 'sedan', 'shiny' ]
+      it 'collects vans by tag' do
+        expect( Van.with_tag 'new'   ).to match_array [ @van1, @van3 ]
+        expect( Van.with_tag 'shiny' ).to match_array [ @van2, @van3 ]
+        expect( Van.with_tags [ 'new', 'shiny'] ).to match_array [ @van3 ]
+      end
     end
   end
 end

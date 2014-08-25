@@ -5,6 +5,8 @@ module Taggable
 
   included do
     serialize :tags, Tags
+    scope :with_tag,  -> (tag)  { where "tags ? #{ self.sanitize tag }" }
+    scope :with_tags, -> (tags) { tags.inject( self, &:with_tag ) }
   end
 
   class Tags
