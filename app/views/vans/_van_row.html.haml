@@ -1,0 +1,7 @@
+%tr
+  %td= van.id
+  %td= van.make
+  %td= van.model
+  %td= van.tags.to_a.join ', ' if van.tags
+  %td= link_to 'Edit', [ :edit, van ]
+  %td= link_to 'Destroy', van, method: :delete

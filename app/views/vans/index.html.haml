@@ -1,0 +1,6 @@
+%table
+  %thead
+    = render partial: 'van_head_row'
+  %tbody
+    - @vans.each do |van|
+      = render partial: 'van_row', locals: { van: van }
