@@ -30,6 +30,11 @@ class VansController < ApplicationController
     @van = Van.new
   end
 
+  def tags
+    @vans = Van.with_tags process_tags( params )[ :tags ]
+    render :index
+  end
+
   def update
     van = Van.find params[ :id ]
     if van.update van_params

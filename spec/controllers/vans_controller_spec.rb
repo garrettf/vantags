@@ -80,4 +80,21 @@ describe VansController do
       is_expected.to redirect_to '/'
     end
   end
+
+  describe 'GET tags' do
+    before do
+      @van_red       = FactoryGirl.create :van, tags: [ 'red' ]
+      @van_shiny     = FactoryGirl.create :van, tags: [ 'shiny' ]
+      @van_shiny_red = FactoryGirl.create :van, tags: [ 'red', 'shiny' ]
+    end
+
+    it 'displays vans that match the specified tags' do
+      get :tags, tags: 'red'
+      expect( assigns( :vans ) ).to match_array [ @van_red, @van_shiny_red ]
+      get :tags, tags: 'shiny'
+      expect( assigns( :vans ) ).to match_array [ @van_shiny, @van_shiny_red ]
+      get :tags, tags: 'red, shiny'
+      expect( assigns( :vans ) ).to match_array [ @van_shiny_red ]
+    end
+  end
 end
